@@ -26,21 +26,66 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
+    // Types allowed.
     $options = array(
-        'both' => get_string('both', 'tinymce_recordrtc'),
-        'audio' => get_string('onlyaudio', 'tinymce_recordrtc'),
-        'video' => get_string('onlyvideo', 'tinymce_recordrtc')
+        'both' => new lang_string('both', 'tinymce_recordrtc'),
+        'audio' => new lang_string('onlyaudio', 'tinymce_recordrtc'),
+        'video' => new lang_string('onlyvideo', 'tinymce_recordrtc')
     );
-    $settings->add(new admin_setting_configselect('tinymce_recordrtc/allowedtypes',
-        get_string('allowedtypes', 'tinymce_recordrtc'), get_string('allowedtypes_desc', 'tinymce_recordrtc'),
-        '', $options));
-    $settings->add(new admin_setting_configtext('tinymce_recordrtc/audiobitrate',
-        get_string('audiobitrate', 'tinymce_recordrtc'), get_string('audiobitrate_desc', 'tinymce_recordrtc'),
-        '128000', PARAM_RAW, 6));
-    $settings->add(new admin_setting_configtext('tinymce_recordrtc/videobitrate',
-        get_string('videobitrate', 'tinymce_recordrtc'), get_string('videobitrate_desc', 'tinymce_recordrtc'),
-        '2500000', PARAM_RAW, 7));
-    $settings->add(new admin_setting_configtext('tinymce_recordrtc/timelimit',
-        get_string('timelimit', 'tinymce_recordrtc'), get_string('timelimit_desc', 'tinymce_recordrtc'),
-        '120', PARAM_RAW, 4, 4));
+    $name = get_string('allowedtypes', 'tinymce_recordrtc');
+    $desc = get_string('allowedtypes_desc', 'tinymce_recordrtc');
+    $default = '';
+    $setting = new admin_setting_configselect('tinymce_recordrtc/allowedtypes', $name, $desc, $default, $options);
+    $settings->add($setting);
+
+    // Audio bitrate.
+    $name = get_string('audiobitrate', 'tinymce_recordrtc');
+    $desc = get_string('audiobitrate_desc', 'tinymce_recordrtc');
+    $default = '128000';
+    $setting = new admin_setting_configtext('tinymce_recordrtc/audiobitrate', $name, $desc, $default, PARAM_RAW, 8);
+    $settings->add($setting);
+
+    // Video bitrate.
+    $name = get_string('videobitrate', 'tinymce_recordrtc');
+    $desc = get_string('videobitrate_desc', 'tinymce_recordrtc');
+    $default = '2500000';
+    $setting = new admin_setting_configtext('tinymce_recordrtc/videobitrate', $name, $desc, $default, PARAM_RAW, 8);
+    $settings->add($setting);
+
+    // Recording time limit.
+    $name = get_string('timelimit', 'tinymce_recordrtc');
+    $desc = get_string('timelimit_desc', 'tinymce_recordrtc');
+    $default = '120';
+    $setting = new admin_setting_configtext('tinymce_recordrtc/timelimit', $name, $desc, $default, PARAM_RAW, 8);
+    $settings->add($setting);
+
+    // Premium service yes-or-no.
+    $name = get_string('premiumservice', 'tinymce_recordrtc');
+    $desc = get_string('premiumservice_desc', 'tinymce_recordrtc');
+    $default = '0';
+    $yes = '1';
+    $no = '0';
+    $setting = new admin_setting_configcheckbox('tinymce_recordrtc/premiumservice', $name, $desc, $default, $yes, $no);
+    $settings->add($setting);
+
+    // Premium recording server URL.
+    $name = get_string('serverurl', 'tinymce_recordrtc');
+    $desc = get_string('serverurl_desc', 'tinymce_recordrtc');
+    $default = '';
+    $setting = new admin_setting_configtext('tinymce_recordrtc/serverurl', $name, $desc, $default, PARAM_RAW, 20);
+    $settings->add($setting);
+
+    // API key.
+    $name = get_string('apikey', 'tinymce_recordrtc');
+    $desc = get_string('apikey_desc', 'tinymce_recordrtc');
+    $default = '';
+    $setting = new admin_setting_configtext('tinymce_recordrtc/apikey', $name, $desc, $default, PARAM_RAW, 32);
+    $settings->add($setting);
+
+    // API shared secret.
+    $name = get_string('apisecret', 'tinymce_recordrtc');
+    $desc = get_string('apisecret_desc', 'tinymce_recordrtc');
+    $default = '';
+    $setting = new admin_setting_configpasswordunmask('tinymce_recordrtc/apisecret', $name, $desc, $default);
+    $settings->add($setting);
 }
