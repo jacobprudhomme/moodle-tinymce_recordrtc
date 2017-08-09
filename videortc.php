@@ -48,8 +48,12 @@ $PAGE->set_pagelayout('embedded');
 $PAGE->requires->css(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/css/style.css'));
 $PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'vendor/js/bowser.js'), true);
 $PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'vendor/js/adapter.js'), true);
-$PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/commonmodule.js'), true);
 $PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'vendor/js/socket.io.js'), true);
+if (get_config('tinymce_recordrtc', 'premiumservice') === '0') {
+    $PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/commonmodule.js'), true);
+} else {
+    $PAGE->requires->js(new moodle_url($CFG->wwwroot.MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/premiumcommonmodule.js'), true);
+}
 
 // Get max file upload size.
 $maxuploadsize = ini_get('upload_max_filesize');
@@ -64,9 +68,13 @@ $jsvars = array(
 );
 $PAGE->requires->data_for_js('recordrtc', $jsvars);
 
+$fullpath = MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/videomodule.js';
+if (get_config('tinymce_recordrtc', 'premiumservice') === '1') {
+    $fullpath = MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/premiumvideomodule.js';
+}
 $jsmodule = array(
     'name'     => 'tinymce_recordrtc',
-    'fullpath' => MOODLE_TINYMCE_RECORDRTC_ROOT.'tinymce/js/videomodule.js'
+    'fullpath' => $fullpath
 );
 $PAGE->requires->js_init_call('M.tinymce_recordrtc.view_init', array(), false, $jsmodule);
 
