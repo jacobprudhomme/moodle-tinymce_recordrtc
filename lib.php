@@ -66,7 +66,10 @@ class tinymce_recordrtc extends editor_tinymce_plugin {
                 'contextid' => $options['context']->id,
                 'sesskey' => sesskey(),
                 'type' => $this->get_config('allowedtypes'),
-                'timelimit' => $this->get_config('timelimit')
+                'timelimit' => $this->get_config('timelimit'),
+                'serverurl' => $this->get_config('serverurl'),
+                'apikey' => $this->get_config('apikey'),
+                'apisecret' => $this->get_config('apisecret')
               );
             $this->add_button_after($params, 0, 'audiortc');
         }
@@ -78,7 +81,10 @@ class tinymce_recordrtc extends editor_tinymce_plugin {
                 'contextid' => $options['context']->id,
                 'sesskey' => sesskey(),
                 'type' => $this->get_config('allowedtypes'),
-                'timelimit' => $this->get_config('timelimit')
+                'timelimit' => $this->get_config('timelimit'),
+                'serverurl' => $this->get_config('serverurl'),
+                'apikey' => $this->get_config('apikey'),
+                'apisecret' => $this->get_config('apisecret')
               );
             $this->add_button_after($params, 0, 'videortc');
         }
