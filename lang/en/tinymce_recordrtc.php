@@ -39,6 +39,14 @@ $string['videobitrate'] = 'Video bitrate';
 $string['videobitrate_desc'] = 'Quality of video recording (larger number means higher quality)';
 $string['timelimit'] = 'Time limit in seconds';
 $string['timelimit_desc'] = 'Maximum recording length allowed for the audio/video clips';
+$string['premiumservice'] = 'Use premium service';
+$string['premiumservice_desc'] = 'Whether Blindside Networks premium recording service should be used';
+$string['serverurl'] = 'Server URL';
+$string['serverurl_desc'] = 'Location of server used for the premium recording service';
+$string['apikey'] = 'API key';
+$string['apikey_desc'] = 'API key for premium recording service. Can be left blank if not used';
+$string['apisecret'] = 'API secret';
+$string['apisecret_desc'] = 'API secret for premium recording service. Can be left blank if not used';
 
 $string['gumabort_title'] = 'Something happened';
 $string['gumabort'] = 'Something strange happened which prevented the webcam/microphone from being used';
