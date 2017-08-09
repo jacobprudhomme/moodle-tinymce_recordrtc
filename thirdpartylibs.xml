@@ -8,6 +8,13 @@
         <licenseversion></licenseversion>
     </library>
     <library>
+      <location>vendor/js</location>
+      <name>Socket.io</name>
+      <version>2.0.3</version>
+      <license>MIT</license>
+      <licenseversion></licenseversion>
+    </library>
+    <library>
         <location>vendor/js</location>
         <name>WebRTC adapter</name>
         <version>4.1.0</version>
