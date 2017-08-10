@@ -60,7 +60,7 @@ M.tinymce_recordrtc.handle_stop = function(event) {
         player.set('src', path);
         player.set('controls', true);
         player.set('muted', false);
-        player.ancestor().ancestor().removeClass('hide'); // AUDIO ONLY
+        player.ancestor().ancestor().removeClass('hide'); // Only audio player is hidden at this point.
 
         // Show upload button.
         uploadBtn.set('disabled', false);
