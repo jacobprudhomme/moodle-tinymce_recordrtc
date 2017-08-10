@@ -92,7 +92,7 @@ M.tinymce_recordrtc.handle_data_available = function(event) {
             startStopBtn.simulate('click');
         });
         Y.use('moodle-core-notification-alert', function() {
-            new M.core.alert({
+            var dialogue = new M.core.alert({
                 title: M.util.get_string('nearingmaxsize_title', 'tinymce_recordrtc'),
                 message: M.util.get_string('nearingmaxsize', 'tinymce_recordrtc')
             });

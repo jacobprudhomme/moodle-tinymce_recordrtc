@@ -85,9 +85,13 @@ M.tinymce_recordrtc.init_connection = function() {
 
         socket.on('unauthorized', function(err) {
             Y.use('moodle-core-notification-alert', function() {
-                new M.core.alert({
+                var dialogue = new M.core.alert({
                     title: M.util.get_string('notpremium_title', 'tinymce_recordrtc'),
                     message: M.util.get_string('notpremium', 'tinymce_recordrtc')
+                });
+
+                dialogue.after('complete', function() {
+                    tinyMCEPopup.close();
                 });
             });
         });
@@ -96,9 +100,13 @@ M.tinymce_recordrtc.init_connection = function() {
     socket.on('connect_error', function() {
         socket.disconnect();
         Y.use('moodle-core-notification-alert', function() {
-            new M.core.alert({
+            var dialogue = new M.core.alert({
                 title: M.util.get_string('servernotfound_title', 'tinymce_recordrtc'),
                 message: M.util.get_string('servernotfound', 'tinymce_recordrtc')
+            });
+
+            dialogue.after('complete', function() {
+                tinyMCEPopup.close();
             });
         });
     });

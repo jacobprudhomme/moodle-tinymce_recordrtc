@@ -89,7 +89,7 @@ M.tinymce_recordrtc.view_init = function() {
                     switch (error.name) {
                         case 'AbortError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumabort_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumabort', 'tinymce_recordrtc')
                                 });
@@ -100,7 +100,7 @@ M.tinymce_recordrtc.view_init = function() {
                             break;
                         case 'NotAllowedError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumnotallowed_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumnotallowed', 'tinymce_recordrtc')
                                 });
@@ -111,7 +111,7 @@ M.tinymce_recordrtc.view_init = function() {
                             break;
                         case 'NotFoundError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumnotfound_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumnotfound', 'tinymce_recordrtc')
                                 });
@@ -122,7 +122,7 @@ M.tinymce_recordrtc.view_init = function() {
                             break;
                         case 'NotReadableError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumnotreadable_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumnotreadable', 'tinymce_recordrtc')
                                 });
@@ -133,7 +133,7 @@ M.tinymce_recordrtc.view_init = function() {
                             break;
                         case 'OverConstrainedError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumoverconstrained_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumoverconstrained', 'tinymce_recordrtc')
                                 });
@@ -144,17 +144,20 @@ M.tinymce_recordrtc.view_init = function() {
                             break;
                         case 'SecurityError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumsecurity_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumsecurity', 'tinymce_recordrtc')
                                 });
+
+                                dialogue.after('complete', function() {
+                                    tinyMCEPopup.close();
+                                });
                             });
 
-                            tinyMCEPopup.close();
                             break;
                         case 'TypeError':
                             Y.use('moodle-core-notification-alert', function() {
-                                new M.core.alert({
+                                var dialogue = new M.core.alert({
                                     title: M.util.get_string('gumtype_title', 'tinymce_recordrtc'),
                                     message: M.util.get_string('gumtype', 'tinymce_recordrtc')
                                 });
@@ -243,7 +246,7 @@ M.tinymce_recordrtc.stop_recording_audio = function(stream) {
         // Trigger error if no recording has been made.
         if (!player.get('src') || chunks === []) {
             Y.use('moodle-core-notification-alert', function() {
-                new M.core.alert({
+                var dialogue = new M.core.alert({
                     title: M.util.get_string('norecordingfound_title', 'tinymce_recordrtc'),
                     message: M.util.get_string('norecordingfound', 'tinymce_recordrtc')
                 });
