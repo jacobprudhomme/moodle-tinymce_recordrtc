@@ -23,7 +23,7 @@ M.tinymce_recordrtc.init_connection = function() {
     socket.connect();
 
     socket.on('connect', function() {
-        // Send key and secret from Moodle settings
+        // Send key and secret from Moodle settings.
         socket.emit('authentication', {
             key: window.params.apikey,
             secret: window.params.apisecret
