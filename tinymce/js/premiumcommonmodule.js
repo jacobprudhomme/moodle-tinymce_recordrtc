@@ -46,6 +46,22 @@ var startStopBtn = null;
 var uploadBtn = null;
 var socket = null;
 
+// A helper for making a Moodle alert appear.
+// Subject is the content of the alert (which error ther alert is for).
+// Possibility to add on-alert-close event.
+M.tinymce_recordrtc.show_alert = function(subject, onCloseEvent) {
+    Y.use('moodle-core-notification-alert', function() {
+        var dialogue = new M.core.alert({
+            title: M.util.get_string(subject + '_title', 'tinymce_recordrtc'),
+            message: M.util.get_string(subject, 'tinymce_recordrtc')
+        });
+
+        if (onCloseEvent) {
+            dialogue.after('complete', onCloseEvent);
+        }
+    });
+};
+
 // Notify and redirect user if plugin is used from insecure location.
 M.tinymce_recordrtc.check_secure = function() {
     var isSecureOrigin = (window.location.protocol === 'https:') ||
@@ -70,6 +86,11 @@ M.tinymce_recordrtc.check_browser = function() {
 
 // Attempt to connect to the premium server via Socket.io.
 M.tinymce_recordrtc.init_connection = function() {
+    // Dialogue-closing behaviour.
+    var closeDialogue = function() {
+        tinyMCEPopup.close();
+    };
+
     socket.connect();
 
     socket.on('connect', function() {
@@ -84,31 +105,14 @@ M.tinymce_recordrtc.init_connection = function() {
         });
 
         socket.on('unauthorized', function(err) {
-            Y.use('moodle-core-notification-alert', function() {
-                var dialogue = new M.core.alert({
-                    title: M.util.get_string('notpremium_title', 'tinymce_recordrtc'),
-                    message: M.util.get_string('notpremium', 'tinymce_recordrtc')
-                });
-
-                dialogue.after('complete', function() {
-                    tinyMCEPopup.close();
-                });
-            });
+            M.tinymce_recordrtc.show_alert('notpremium', closeDialogue);
         });
     });
 
     socket.on('connect_error', function() {
         socket.disconnect();
-        Y.use('moodle-core-notification-alert', function() {
-            var dialogue = new M.core.alert({
-                title: M.util.get_string('servernotfound_title', 'tinymce_recordrtc'),
-                message: M.util.get_string('servernotfound', 'tinymce_recordrtc')
-            });
 
-            dialogue.after('complete', function() {
-                tinyMCEPopup.close();
-            });
-        });
+        M.tinymce_recordrtc.show_alert('servernotfound', closeDialogue);
     });
 };
 

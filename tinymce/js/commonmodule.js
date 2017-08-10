@@ -50,6 +50,22 @@ var recType = null;
 var startStopBtn = null;
 var uploadBtn = null;
 
+// A helper for making a Moodle alert appear.
+// Subject is the content of the alert (which error ther alert is for).
+// Possibility to add on-alert-close event.
+M.tinymce_recordrtc.show_alert = function(subject, onCloseEvent) {
+    Y.use('moodle-core-notification-alert', function() {
+        var dialogue = new M.core.alert({
+            title: M.util.get_string(subject + '_title', 'tinymce_recordrtc'),
+            message: M.util.get_string(subject, 'tinymce_recordrtc')
+        });
+
+        if (onCloseEvent) {
+            dialogue.after('complete', onCloseEvent);
+        }
+    });
+};
+
 // Notify and redirect user if plugin is used from insecure location.
 M.tinymce_recordrtc.check_secure = function() {
     var isSecureOrigin = (window.location.protocol === 'https:') ||
@@ -91,12 +107,7 @@ M.tinymce_recordrtc.handle_data_available = function(event) {
         Y.use('node-event-simulate', function() {
             startStopBtn.simulate('click');
         });
-        Y.use('moodle-core-notification-alert', function() {
-            var dialogue = new M.core.alert({
-                title: M.util.get_string('nearingmaxsize_title', 'tinymce_recordrtc'),
-                message: M.util.get_string('nearingmaxsize', 'tinymce_recordrtc')
-            });
-        });
+        M.tinymce_recordrtc.show_alert('nearingmaxsize');
     } else if ((blobSize >= maxUploadSize) && (window.localStorage.getItem('alerted') === 'true')) {
         window.localStorage.removeItem('alerted');
     } else {

@@ -78,87 +78,42 @@ M.tinymce_recordrtc.view_init = function() {
                 // Handle recording errors.
                 onMediaCapturingFailed: function(error) {
                     var btnLabel = M.util.get_string('recordingfailed', 'tinymce_recordrtc');
+                    var treatAsStopped = function() {
+                        commonConfig.onMediaStopped(btnLabel);
+                    };
 
                     // Handle getUserMedia-thrown errors.
+                    // After alert, proceed to treat as stopped recording, or close dialogue.
                     switch (error.name) {
                         case 'AbortError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumabort_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumabort', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumabort', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         case 'NotAllowedError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumnotallowed_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumnotallowed', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumnotallowed', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         case 'NotFoundError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumnotfound_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumnotfound', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumnotfound', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         case 'NotReadableError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumnotreadable_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumnotreadable', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumnotreadable', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         case 'OverConstrainedError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumoverconstrained_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumoverconstrained', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumoverconstrained', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         case 'SecurityError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumsecurity_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumsecurity', 'tinymce_recordrtc')
-                                });
-
-                                dialogue.after('complete', function() {
-                                    tinyMCEPopup.close();
-                                });
+                            M.tinymce_recordrtc.show_alert('gumsecurity', function() {
+                                tinyMCEPopup.close();
                             });
 
                             break;
                         case 'TypeError':
-                            Y.use('moodle-core-notification-alert', function() {
-                                var dialogue = new M.core.alert({
-                                    title: M.util.get_string('gumtype_title', 'tinymce_recordrtc'),
-                                    message: M.util.get_string('gumtype', 'tinymce_recordrtc')
-                                });
-                            });
+                            M.tinymce_recordrtc.show_alert('gumtype', treatAsStopped);
 
-                            // Proceed to treat as a stopped recording.
-                            commonConfig.onMediaStopped(btnLabel);
                             break;
                         default:
                             break;
@@ -236,12 +191,7 @@ M.tinymce_recordrtc.stop_recording_video = function(stream) {
     uploadBtn.on('click', function() {
         // Trigger error if no recording has been made.
         if (!player.get('src')) {
-            Y.use('moodle-core-notification-alert', function() {
-                var dialogue = new M.core.alert({
-                    title: M.util.get_string('norecordingfound_title', 'tinymce_recordrtc'),
-                    message: M.util.get_string('norecordingfound', 'tinymce_recordrtc')
-                });
-            });
+            M.tinymce_recordrtc.show_alert('norecordingfound');
         } else {
             uploadBtn.set('disabled', true);
 
