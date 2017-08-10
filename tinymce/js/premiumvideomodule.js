@@ -181,21 +181,4 @@ M.tinymce_recordrtc.stop_recording_video = function(stream) {
     stream.getTracks().forEach(function(track) {
         track.stop();
     });
-
-    // Show upload button.
-    uploadBtn.ancestor().ancestor().removeClass('hide');
-    uploadBtn.set('textContent', M.util.get_string('attachrecording', 'tinymce_recordrtc'));
-    uploadBtn.set('disabled', false);
-
-    // Handle when upload button is clicked.
-    uploadBtn.on('click', function() {
-        // Trigger error if no recording has been made.
-        if (!player.get('src')) {
-            M.tinymce_recordrtc.show_alert('norecordingfound');
-        } else {
-            uploadBtn.set('disabled', true);
-
-            M.tinymce_recordrtc.insert_annotation(recType, player.get('src'));
-        }
-    });
 };

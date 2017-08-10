@@ -50,7 +50,7 @@ M.tinymce_recordrtc.handle_data_available = function(event) {
     socket.emit('data available', event.data);
 };
 
-// Stop recording and handle end.
+// Handle recording end.
 M.tinymce_recordrtc.handle_stop = function(event) {
     startStopBtn.set('textContent', 'Start Recording');
 
@@ -61,6 +61,23 @@ M.tinymce_recordrtc.handle_stop = function(event) {
         player.set('controls', true);
         player.set('muted', false);
         player.ancestor().ancestor().removeClass('hide'); // AUDIO ONLY
+
+        // Show upload button.
+        uploadBtn.set('disabled', false);
+        uploadBtn.set('textContent', M.util.get_string('attachrecording', 'tinymce_recordrtc'));
+        uploadBtn.ancestor().ancestor().removeClass('hide');
+
+        // Handle when upload button is clicked.
+        uploadBtn.on('click', function() {
+            // Trigger error if no recording has been made.
+            if (!player.get('src')) {
+                M.tinymce_recordrtc.show_alert('norecordingfound');
+            } else {
+                uploadBtn.set('disabled', true);
+
+                M.tinymce_recordrtc.insert_annotation(recType, player.get('src'));
+            }
+        });
     });
 };
 
