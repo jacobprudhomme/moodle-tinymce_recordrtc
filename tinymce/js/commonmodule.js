@@ -82,24 +82,29 @@ M.tinymce_recordrtc.handle_gum_errors = function(error, commonConfig) {
 
 // Select best options for the recording codec and bitrate.
 M.tinymce_recordrtc.best_rec_options = function(recType) {
+    var types = null,
+        options = null;
+
     if (recType === 'audio') {
-        var types = [
-                'audio/webm;codecs=opus',
-                'audio/ogg;codecs=opus'
-            ],
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate
-            };
+        types = [
+            'audio/webm;codecs=opus',
+            'audio/ogg;codecs=opus'
+        ];
+
+        options = {
+            audioBitsPerSecond: window.params.audiobitrate
+        };
     } else {
-        var types = [
-                'video/webm;codecs=vp9,opus',
-                'video/webm;codecs=h264,opus',
-                'video/webm;codecs=vp8,opus'
-            ],
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                videoBitsPerSecond: window.params.videobitrate
-            };
+        types = [
+            'video/webm;codecs=vp9,opus',
+            'video/webm;codecs=h264,opus',
+            'video/webm;codecs=vp8,opus'
+        ];
+
+        options = {
+            audioBitsPerSecond: window.params.audiobitrate,
+            videoBitsPerSecond: window.params.videobitrate
+        };
     }
 
     var compatTypes = types.filter(function(type) {
