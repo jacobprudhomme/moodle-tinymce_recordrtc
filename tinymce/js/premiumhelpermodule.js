@@ -7,6 +7,9 @@
 // Scrutinizer CI directives.
 /** global: M */
 /** global: tinyMCEPopup */
+/** global: player */
+/** global: uploadBtn */
+/** global: recType */
 
 M.tinymce_recordrtc = M.tinymce_recordrtc || {};
 
