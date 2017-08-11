@@ -82,8 +82,7 @@ M.tinymce_recordrtc.handle_gum_errors = function(error, commonConfig) {
 
 // Select best options for the recording codec and bitrate.
 M.tinymce_recordrtc.best_rec_options = function(recType) {
-    var types = null,
-        options = null;
+    var types, options;
 
     if (recType === 'audio') {
         types = [
