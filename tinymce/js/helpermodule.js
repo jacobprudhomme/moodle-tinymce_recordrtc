@@ -9,6 +9,7 @@
 /** global: Y */
 /** global: mediaRecorder */
 /** global: player */
+/** global: startStopBtn */
 /** global: uploadBtn */
 /** global: recType */
 
