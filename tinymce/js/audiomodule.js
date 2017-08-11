@@ -82,8 +82,8 @@ M.tinymce_recordrtc.view_init = function() {
                 },
 
                 // Handle recording errors.
-                onMediaCapturingFailed: function(err) {
-                    M.tinymce_recordrtc.handle_gum_errors(err, this);
+                onMediaCapturingFailed: function(error) {
+                    M.tinymce_recordrtc.handle_gum_errors(error, commonConfig);
                 }
             };
 
