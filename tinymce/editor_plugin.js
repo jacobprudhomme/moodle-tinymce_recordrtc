@@ -58,7 +58,7 @@
             ed.addCommand('mceAudioRTC', function() {
                 var audiortc = ed.getParam('audiortc', {}),
                     viewparams = '';
-                Object.keys(audiortc).forEach(function(key, i) {
+                Object.keys(audiortc).forEach(function(key) {
                     viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
                     viewparams += '=' + window.encodeURIComponent(audiortc[key]);
                 });
@@ -107,7 +107,7 @@
             ed.addCommand('mceVideoRTC', function() {
                 var videortc = ed.getParam('videortc', {}),
                     viewparams = '';
-                Object.keys(videortc).forEach(function(key, i) {
+                Object.keys(videortc).forEach(function(key) {
                     viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
                     viewparams += '=' + window.encodeURIComponent(videortc[key]);
                 });
