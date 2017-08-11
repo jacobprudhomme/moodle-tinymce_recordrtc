@@ -91,7 +91,7 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
         ];
 
         options = {
-            audioBitsPerSecond: window.params.audiobitrate
+            audioBitsPerSecond: window.parseInt(window.params.audiobitrate)
         };
     } else {
         types = [
@@ -101,8 +101,8 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
         ];
 
         options = {
-            audioBitsPerSecond: window.params.audiobitrate,
-            videoBitsPerSecond: window.params.videobitrate
+            audioBitsPerSecond: window.parseInt(window.params.audiobitrate),
+            videoBitsPerSecond: window.parseInt(window.params.videobitrate)
         };
     }
 
@@ -110,7 +110,7 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
         return window.MediaRecorder.isTypeSupported(type);
     });
 
-    if (compatTypes !== []) {
+    if (compatTypes.length !== 0) {
         options.mimeType = compatTypes[0];
     }
 
