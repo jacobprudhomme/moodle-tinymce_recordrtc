@@ -100,6 +100,20 @@ M.tinymce_recordrtc.view_init = function() {
             }
         }
     });
+
+    // Handle when upload button is clicked.
+    uploadBtn.on('click', function() {
+        // Trigger error if no recording has been made.
+        if (!player.get('src')) {
+            M.tinymce_recordrtc.show_alert('norecordingfound');
+        } else {
+            uploadBtn.set('disabled', true);
+
+            socket.emit('recording uploaded');
+
+            M.tinymce_recordrtc.insert_annotation(recType, player.get('src'));
+        }
+    });
 };
 
 // Setup to get audio stream from microphone.
