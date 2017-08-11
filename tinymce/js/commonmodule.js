@@ -80,6 +80,39 @@ M.tinymce_recordrtc.handle_gum_errors = function(error, commonConfig) {
     }
 };
 
+// Select best options for the recording codec and bitrate.
+M.tinymce_recordrtc.best_rec_options = function(recType) {
+    if (recType === 'audio') {
+        var types = [
+                'audio/webm;codecs=opus',
+                'audio/ogg;codecs=opus'
+            ],
+            options = {
+                audioBitsPerSecond: window.params.audiobitrate
+            };
+    } else {
+        var types = [
+                'video/webm;codecs=vp9,opus',
+                'video/webm;codecs=h264,opus',
+                'video/webm;codecs=vp8,opus'
+            ],
+            options = {
+                audioBitsPerSecond: window.params.audiobitrate,
+                videoBitsPerSecond: window.params.videobitrate
+            };
+    }
+
+    var compatTypes = types.filter(function(type) {
+        return window.MediaRecorder.isTypeSupported(type);
+    });
+
+    if (compatTypes !== []) {
+        options.mimeType = compatTypes[0];
+    }
+
+    return options;
+};
+
 // Notify and redirect user if plugin is used from insecure location.
 M.tinymce_recordrtc.check_secure = function() {
     var isSecureOrigin = (window.location.protocol === 'https:') ||

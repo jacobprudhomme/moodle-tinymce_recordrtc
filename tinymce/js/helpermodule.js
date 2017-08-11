@@ -92,45 +92,9 @@ M.tinymce_recordrtc.handle_stop = function() {
 
 // Get everything set up to start recording.
 M.tinymce_recordrtc.start_recording = function(type, stream) {
-    // The options for the recording codecs and bitrates.
-    var options = null;
-    if (type === 'audio') {
-        if (window.MediaRecorder.isTypeSupported('audio/webm;codecs=opus')) {
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                mimeType: 'audio/webm;codecs=opus'
-            };
-        } else if (window.MediaRecorder.isTypeSupported('audio/ogg;codecs=opus')) {
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                mimeType: 'audio/ogg;codecs=opus'
-            };
-        }
-    } else {
-        if (window.MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                videoBitsPerSecond: window.params.videobitrate,
-                mimeType: 'video/webm;codecs=vp9,opus'
-            };
-        } else if (window.MediaRecorder.isTypeSupported('video/webm;codecs=h264,opus')) {
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                videoBitsPerSecond: window.params.videobitrate,
-                mimeType: 'video/webm;codecs=h264,opus'
-            };
-        } else if (window.MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
-            options = {
-                audioBitsPerSecond: window.params.audiobitrate,
-                videoBitsPerSecond: window.params.videobitrate,
-                mimeType: 'video/webm;codecs=vp8,opus'
-            };
-        }
-    }
-
-    // If none of the options above are supported, fall back on browser defaults.
-    mediaRecorder = options ? new window.MediaRecorder(stream, options)
-                            : new window.MediaRecorder(stream);
+    // If none of the mime-types are supported, fall back on browser defaults.
+    var options = M.tinymce_recordrtc.best_rec_options(type);
+    mediaRecorder = new window.MediaRecorder(stream, options);
 
     // Initialize MediaRecorder events and start recording.
     mediaRecorder.ondataavailable = M.tinymce_recordrtc.handle_data_available;
