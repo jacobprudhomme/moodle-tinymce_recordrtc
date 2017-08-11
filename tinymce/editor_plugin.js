@@ -26,10 +26,12 @@
             ed.addCommand('mceForceRepaint', function() {
                 var root = ed.dom.getRoot(),
                     items = root.getElementsByTagName("img");
+
                 for (var i = 0; i < items.length; i++) {
                     var src = items[i].getAttribute('src').replace(/\?\d+$/, '');
                     items[i].setAttribute('src', src + '?' + (new Date().getTime()));
                 }
+
                 ed.execCommand('mceRepaint');
                 ed.focus();
             });
@@ -38,6 +40,7 @@
                 // This function duplicates the TinyMCE windowManager code when 'maximize' button is pressed.
                 var vp = ed.dom.getViewPort(),
                     id = w.id;
+
                 // Reduce viewport size to avoid scrollbars.
                 vp.w -= 2;
                 vp.h -= 2;
@@ -47,26 +50,28 @@
 
                 w.element.moveTo(vp.x, vp.y);
                 w.element.resizeTo(vp.w, vp.h);
+
                 ed.dom.setStyles(id + '_ifr', {width: vp.w - w.deltaWidth, height: vp.h - w.deltaHeight});
                 ed.dom.addClass(id + '_wrapper', 'mceMaximized');
             });
 
             ed.addCommand('mceAudioRTC', function() {
-                var audiortc = ed.getParam('audiortc', {});
-                var viewparams = '';
-                for (var key in audiortc) {
-                    if (audiortc.hasOwnProperty(key)) {
-                        viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
-                        viewparams += '=' + window.encodeURIComponent(audiortc[key]);
-                    }
-                }
+                var audiortc = ed.getParam('audiortc', {}),
+                    viewparams = '';
+                Object.keys(audiortc).forEach(function(key, i) {
+                    viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
+                    viewparams += '=' + window.encodeURIComponent(audiortc[key]);
+                });
+
                 var viewurl = ed.getParam("moodle_plugin_base") + 'recordrtc/audiortc.php';
                 viewurl += (viewparams != '' ? '?' + viewparams : '');
+
                 var onClose = function() {
                     ed.windowManager.onClose.remove(onClose);
                     ed.execCommand('mceForceRepaint');
                 };
                 ed.windowManager.onClose.add(onClose);
+
                 var vp = ed.dom.getViewPort(),
                     baseWidth = 640 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
                     percentOfViewportWidth = vp.w * 0.75,
@@ -77,6 +82,7 @@
                     width = vp.w;
                     height = vp.h;
                 }
+
                 var w = ed.windowManager.open({
                     file: viewurl,
                     width: width,
@@ -99,21 +105,22 @@
             });
 
             ed.addCommand('mceVideoRTC', function() {
-                var videortc = ed.getParam('videortc', {});
-                var viewparams = '';
-                for (var key in videortc) {
-                    if (videortc.hasOwnProperty(key)) {
-                        viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
-                        viewparams += '=' + window.encodeURIComponent(videortc[key]);
-                    }
-                }
+                var videortc = ed.getParam('videortc', {}),
+                    viewparams = '';
+                Object.keys(videortc).forEach(function(key, i) {
+                    viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
+                    viewparams += '=' + window.encodeURIComponent(videortc[key]);
+                });
+
                 var viewurl = ed.getParam("moodle_plugin_base") + 'recordrtc/videortc.php';
                 viewurl += (viewparams != '' ? '?' + viewparams : '');
+
                 var onClose = function() {
                     ed.windowManager.onClose.remove(onClose);
                     ed.execCommand('mceForceRepaint');
                 };
                 ed.windowManager.onClose.add(onClose);
+
                 var vp = ed.dom.getViewPort(),
                     baseWidth = 720 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
                     percentOfViewportWidth = vp.w * 0.75,
@@ -124,6 +131,7 @@
                     width = vp.w;
                     height = vp.h;
                 }
+
                 var w = ed.windowManager.open({
                     file: viewurl,
                     width: width,
