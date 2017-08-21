@@ -42,21 +42,21 @@ if ($ADMIN->fulltree) {
     $name = get_string('audiobitrate', 'tinymce_recordrtc');
     $desc = get_string('audiobitrate_desc', 'tinymce_recordrtc');
     $default = '128000';
-    $setting = new admin_setting_configtext('tinymce_recordrtc/audiobitrate', $name, $desc, $default, PARAM_RAW, 8);
+    $setting = new admin_setting_configtext('tinymce_recordrtc/audiobitrate', $name, $desc, $default, PARAM_INT, 8);
     $settings->add($setting);
 
     // Video bitrate.
     $name = get_string('videobitrate', 'tinymce_recordrtc');
     $desc = get_string('videobitrate_desc', 'tinymce_recordrtc');
     $default = '2500000';
-    $setting = new admin_setting_configtext('tinymce_recordrtc/videobitrate', $name, $desc, $default, PARAM_RAW, 8);
+    $setting = new admin_setting_configtext('tinymce_recordrtc/videobitrate', $name, $desc, $default, PARAM_INT, 8);
     $settings->add($setting);
 
     // Recording time limit.
     $name = get_string('timelimit', 'tinymce_recordrtc');
     $desc = get_string('timelimit_desc', 'tinymce_recordrtc');
     $default = '120';
-    $setting = new admin_setting_configtext('tinymce_recordrtc/timelimit', $name, $desc, $default, PARAM_RAW, 8);
+    $setting = new admin_setting_configtext('tinymce_recordrtc/timelimit', $name, $desc, $default, PARAM_INT, 8);
     $settings->add($setting);
 
     // Premium service yes-or-no.
@@ -72,14 +72,14 @@ if ($ADMIN->fulltree) {
     $name = get_string('serverurl', 'tinymce_recordrtc');
     $desc = get_string('serverurl_desc', 'tinymce_recordrtc');
     $default = '';
-    $setting = new admin_setting_configtext('tinymce_recordrtc/serverurl', $name, $desc, $default, PARAM_RAW, 20);
+    $setting = new admin_setting_configtext('tinymce_recordrtc/serverurl', $name, $desc, $default, PARAM_URL, 20);
     $settings->add($setting);
 
     // API key.
     $name = get_string('apikey', 'tinymce_recordrtc');
     $desc = get_string('apikey_desc', 'tinymce_recordrtc');
     $default = '';
-    $setting = new admin_setting_configtext('tinymce_recordrtc/apikey', $name, $desc, $default, PARAM_RAW, 32);
+    $setting = new admin_setting_configtext('tinymce_recordrtc/apikey', $name, $desc, $default, PARAM_TEXT, 32);
     $settings->add($setting);
 
     // API shared secret.
