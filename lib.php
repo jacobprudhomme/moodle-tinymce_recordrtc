@@ -62,36 +62,20 @@ class tinymce_recordrtc extends editor_tinymce_plugin {
 
         // Add audio button at the end of the first row.
         $allowedtypes = $this->get_config('allowedtypes', 'both');
-        if ($allowedtypes == 'both' || $allowedtypes == 'audio') {
-            // Add parameters for audiortc.
-            $params['audiortc'] = array(
-                'contextid' => $options['context']->id,
-                'sesskey' => sesskey(),
-                'type' => $this->get_config('allowedtypes'),
-                'audiobitrate' => $this->get_config('audiobitrate'),
-                'timelimit' => $this->get_config('timelimit'),
-                'serverurl' => $this->get_config('serverurl'),
-                'apikey' => $this->get_config('apikey'),
-                'apisecret' => $this->get_config('apisecret')
-              );
-            $this->add_button_after($params, 0, 'audiortc');
-        }
+        $allowedtypes = str_replace('both', 'audio,video', $allowedtypes);
+        $allowedtypes = explode(',', $allowedtypes);
 
-        // Add video button at the end of the first row.
-        if ($allowedtypes == 'both' || $allowedtypes == 'video') {
-            // Add parameters for audiortc.
-            $params['videortc'] = array(
+        foreach ($allowedtypes as &$type) {
+            $params[$type.'rtc'] = array(
                 'contextid' => $options['context']->id,
                 'sesskey' => sesskey(),
-                'type' => $this->get_config('allowedtypes'),
-                'audiobitrate' => $this->get_config('audiobitrate'),
-                'videobitrate' => $this->get_config('videobitrate'),
                 'timelimit' => $this->get_config('timelimit'),
-                'serverurl' => $this->get_config('serverurl'),
-                'apikey' => $this->get_config('apikey'),
-                'apisecret' => $this->get_config('apisecret')
-              );
-            $this->add_button_after($params, 0, 'videortc');
+                'audiobitrate' => $this->get_config('audiobitrate'),
+                'videobitrate' => $this->get_config('videobitrate')
+            );
+            $this->add_button_after($params, 0, $type.'rtc');
+
+            unset($type);
         }
     }
 
