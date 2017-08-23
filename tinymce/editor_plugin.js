@@ -1,7 +1,7 @@
 /**
  * TinyMCE plugin RecordRTC - provides UI to annotate the content in the text editor with a WebRTC recording.
  *
- * @package    tinyMCE_recordrtc
+ * @package    tinymce_recordrtc
  * @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
  * @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
  * @copyright  2016 onwards, Blindside Networks Inc.
@@ -54,13 +54,12 @@ function addMaximizeWindow(ed) {
 
 function addAudio(ed, url) {
     ed.addCommand('mceAudioRTC', function() {
-        var audiortc = ed.getParam('audiortc', {}),
-            viewparams = '';
-        Object.keys(audiortc).forEach(function(key) {
-            viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
+        var audiortc = ed.getParam('audiortc', {});
+        var viewparams = '';
+        window.Object.keys(audiortc).forEach(function(key) {
+            viewparams += (viewparams !== '' ? '&' : '') + window.encodeURIComponent(key);
             viewparams += '=' + window.encodeURIComponent(audiortc[key]);
         });
-
         var viewurl = ed.getParam("moodle_plugin_base") + 'recordrtc/audiortc.php';
         viewurl += (viewparams != '' ? '?' + viewparams : '');
 
@@ -74,19 +73,18 @@ function addAudio(ed, url) {
             baseWidth = 640 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
             percentOfViewportWidth = vp.w * 0.75,
             width = percentOfViewportWidth > baseWidth ? percentOfViewportWidth : baseWidth,
-            height = 200 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
+            height = 340 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
             maximizedmode = (width >= vp.w - 2 || height >= vp.h - 2);
         if (maximizedmode) {
             width = vp.w;
             height = vp.h;
         }
-
         var w = ed.windowManager.open({
             file: viewurl,
             width: width,
             height: height,
             inline: 1,
-            popup_css: ed.getParam("moodle_plugin_base") + 'recordrtc/tinyMCE/css/popup.css'
+            popup_css: ed.getParam("moodle_plugin_base") + 'recordrtc/tinymce/css/popup.css'
         }, {
             plugin_url: url // Plugin absolute URL.
         });
@@ -105,13 +103,12 @@ function addAudio(ed, url) {
 
 function addVideo(ed, url) {
     ed.addCommand('mceVideoRTC', function() {
-        var videortc = ed.getParam('videortc', {}),
-            viewparams = '';
-        Object.keys(videortc).forEach(function(key) {
+        var videortc = ed.getParam('videortc', {});
+        var viewparams = '';
+        window.Object.keys(videortc).forEach(function(key) {
             viewparams += (viewparams != '' ? '&' : '') + window.encodeURIComponent(key);
             viewparams += '=' + window.encodeURIComponent(videortc[key]);
         });
-
         var viewurl = ed.getParam("moodle_plugin_base") + 'recordrtc/videortc.php';
         viewurl += (viewparams != '' ? '?' + viewparams : '');
 
@@ -125,19 +122,18 @@ function addVideo(ed, url) {
             baseWidth = 720 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
             percentOfViewportWidth = vp.w * 0.75,
             width = percentOfViewportWidth > baseWidth ? percentOfViewportWidth : baseWidth,
-            height = 640 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
+            height = 780 + window.parseInt(ed.getLang('advimage.delta_width', 0)),
             maximizedmode = (width >= vp.w - 2 || height >= vp.h - 2);
         if (maximizedmode) {
             width = vp.w;
             height = vp.h;
         }
-
         var w = ed.windowManager.open({
             file: viewurl,
             width: width,
             height: height,
             inline: 1,
-            popup_css: ed.getParam("moodle_plugin_base") + 'recordrtc/tinyMCE/css/popup.css'
+            popup_css: ed.getParam("moodle_plugin_base") + 'recordrtc/tinymce/css/popup.css'
         }, {
             plugin_url: url // Plugin absolute URL.
         });
@@ -157,7 +153,7 @@ function addVideo(ed, url) {
 (function() {
     tinyMCE.PluginManager.requireLangPack('recordrtc');
 
-    tinyMCE.create('tinyMCE.plugins.RecordRTC', {
+    tinyMCE.create('tinymce.plugins.RecordRTC', {
         /**
          * Initializes the plugin, this will be executed after the plugin has been created.
          * This call is done before the editor instance has finished it's initialization so use the onInit event
@@ -167,8 +163,15 @@ function addVideo(ed, url) {
          * @param {string} url Absolute URL to where the plugin is located.
          */
         init: function(ed, url) {
+            // Add commands to the editor.
             addForceRepaint(ed);
             addMaximizeWindow(ed);
+
+            if (M.editor_tinymce.filepicker_options[ed.id] &&
+                M.editor_tinymce.filepicker_options[ed.id].hasOwnProperty('media')) {
+                addAudio(ed, url);
+                addVideo(ed, url);
+            }
         },
 
         createControl: function() {
