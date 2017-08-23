@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * TinyMCE RecordRTC library functions.
+ * TinyMCE RecordRTC library functions
  *
  * @package    tinymce_recordrtc
  * @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
- * @copyright  2016 to present, Blindside Networks Inc.
+ * @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
+ * @copyright  2016 onwards, Blindside Networks Inc.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +36,7 @@ const MOODLE_TINYMCE_RECORDRTC_ROOT = '/lib/editor/tinymce/plugins/recordrtc/';
 /**
  * This class defines functions for the plugin.
  *
- * @copyright  2016 to present, Blindside Networks Inc.
+ * @copyright  2016 onwards, Blindside Networks Inc.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class tinymce_recordrtc extends editor_tinymce_plugin {
@@ -60,7 +61,7 @@ class tinymce_recordrtc extends editor_tinymce_plugin {
         // Add JS file, which uses default name.
         $this->add_js_plugin($params);
 
-        // Add audio button at the end of the first row.
+        // Add audio/video buttons at the end of the first row.
         $allowedtypes = $this->get_config('allowedtypes', 'both');
         $allowedtypes = str_replace('both', 'audio,video', $allowedtypes);
         $allowedtypes = explode(',', $allowedtypes);
