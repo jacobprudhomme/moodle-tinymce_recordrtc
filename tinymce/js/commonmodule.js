@@ -1,10 +1,12 @@
 // TinyMCE recordrtc library functions.
-// @package    tinymce_recordrtc.
-// @author     Jesus Federico  (jesus [at] blindsidenetworks [dt] com).
-// @copyright  2016 to present, Blindside Networks Inc.
-// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
+// @package    tinymce_recordrtc
+// @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
+// @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
+// @copyright  2016 onwards, Blindside Networks Inc.
+// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 // Scrutinizer CI directives.
+/** global: navigator */
 /** global: M */
 /** global: Y */
 /** global: tinyMCEPopup */
@@ -89,7 +91,6 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
             'audio/webm;codecs=opus',
             'audio/ogg;codecs=opus'
         ];
-
         options = {
             audioBitsPerSecond: window.parseInt(window.params.audiobitrate)
         };
@@ -99,7 +100,6 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
             'video/webm;codecs=h264,opus',
             'video/webm;codecs=vp8,opus'
         ];
-
         options = {
             audioBitsPerSecond: window.parseInt(window.params.audiobitrate),
             videoBitsPerSecond: window.parseInt(window.params.videobitrate)
@@ -115,6 +115,15 @@ M.tinymce_recordrtc.best_rec_options = function(recType) {
     }
 
     return options;
+};
+
+// Show alert and close plugin if browser does not support WebRTC at all.
+M.tinymce_recordrtc.check_has_gum = function() {
+    if (!(navigator.mediaDevices && window.MediaRecorder)) {
+        M.tinymce_recordrtc.show_alert('nowebrtc', function() {
+            tinyMCEPopup.close();
+        });
+    }
 };
 
 // Notify and redirect user if plugin is used from insecure location.
@@ -141,7 +150,7 @@ M.tinymce_recordrtc.check_browser = function() {
 
 // Capture webcam/microphone stream.
 M.tinymce_recordrtc.capture_user_media = function(mediaConstraints, successCallback, errorCallback) {
-    window.navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
+    navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
 };
 
 // Generates link to recorded annotation to be inserted.

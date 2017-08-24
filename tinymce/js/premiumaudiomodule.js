@@ -1,13 +1,13 @@
 // TinyMCE recordrtc library functions.
-// @package    tinymce_recordrtc.
-// @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com).
-// @copyright  2016 to present, Blindside Networks Inc.
-// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
+// @package    tinymce_recordrtc
+// @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
+// @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
+// @copyright  2016 onwards, Blindside Networks Inc.
+// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 // Scrutinizer CI directives.
 /** global: M */
 /** global: Y */
-/** global: tinyMCEPopup */
 /** global: recordrtc */
 /** global: alertWarning */
 /** global: alertDanger */
@@ -144,7 +144,8 @@ M.tinymce_recordrtc.stop_recording_audio = function(stream) {
     mediaRecorder.stop();
 
     // Stop each individual MediaTrack.
-    stream.getTracks().forEach(function(track) {
-        track.stop();
-    });
+    var tracks = stream.getTracks();
+    for (var i = 0; i < tracks.length; i++) {
+        tracks[i].stop();
+    }
 };

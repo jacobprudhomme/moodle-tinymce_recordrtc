@@ -1,8 +1,9 @@
 // TinyMCE recordrtc library functions.
-// @package    tinymce_recordrtc.
-// @author     Jesus Federico  (jesus [at] blindsidenetworks [dt] com).
-// @copyright  2016 to present, Blindside Networks Inc.
-// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
+// @package    tinymce_recordrtc
+// @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
+// @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
+// @copyright  2016 onwards, Blindside Networks Inc.
+// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 // Scrutinizer CI directives.
 /** global: M */
@@ -78,16 +79,13 @@ M.tinymce_recordrtc.handle_stop = function(event) {
 M.tinymce_recordrtc.start_recording = function(type, stream) {
     // Generate filename with random ID and file extension.
     var fileName = (Math.random() * 1000).toString().replace('.', '');
-    if (type === 'audio') {
-        fileName += '-audio.ogg';
-    } else {
-        fileName += '-video.webm';
-    }
+    fileName += (type === 'audio') ? '-audio.ogg'
+                                   : '-video.webm';
 
     var data = {
         contextid: window.params.contextid,
         type: recType,
-        itemid: window.params.sesskey, // Use session key as item ID.
+        itemid: M.cfg.sesskey, // Use session key as item ID.
         filename: fileName
     };
     socket.emit('recording started', data);

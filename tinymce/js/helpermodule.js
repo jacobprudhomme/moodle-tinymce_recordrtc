@@ -1,12 +1,15 @@
 // TinyMCE recordrtc library functions.
-// @package    tinymce_recordrtc.
-// @author     Jesus Federico  (jesus [at] blindsidenetworks [dt] com).
-// @copyright  2016 to present, Blindside Networks Inc.
-// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later.
+// @package    tinymce_recordrtc
+// @author     Jesus Federico (jesus [at] blindsidenetworks [dt] com)
+// @author     Jacob Prud'homme (jacob [dt] prudhomme [at] blindsidenetworks [dt] com)
+// @copyright  2016 onwards, Blindside Networks Inc.
+// @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
 // Scrutinizer CI directives.
+/** global: parent */
 /** global: M */
 /** global: Y */
+/** global: tinyMCE */
 /** global: mediaRecorder */
 /** global: player */
 /** global: startStopBtn */
@@ -24,23 +27,26 @@ var maxUploadSize = null;
 
 // Add chunks of audio/video to array when made available.
 M.tinymce_recordrtc.handle_data_available = function(event) {
+    // Push recording slice to array.
+    chunks.push(event.data);
     // Size of all recorded data so far.
     blobSize += event.data.size;
 
-    // Push recording slice to array.
     // If total size of recording so far exceeds max upload limit, stop recording.
     // An extra condition exists to avoid displaying alert twice.
-    if ((blobSize >= maxUploadSize) && (!window.localStorage.getItem('alerted'))) {
-        window.localStorage.setItem('alerted', 'true');
+    if (blobSize >= maxUploadSize) {
+        if (!window.localStorage.getItem('alerted')) {
+            window.localStorage.setItem('alerted', 'true');
 
-        Y.use('node-event-simulate', function() {
-            startStopBtn.simulate('click');
-        });
-        M.tinymce_recordrtc.show_alert('nearingmaxsize');
-    } else if ((blobSize >= maxUploadSize) && (window.localStorage.getItem('alerted') === 'true')) {
-        window.localStorage.removeItem('alerted');
-    } else {
-        chunks.push(event.data);
+            Y.use('node-event-simulate', function() {
+                startStopBtn.simulate('click');
+            });
+            M.tinymce_recordrtc.show_alert('nearingmaxsize');
+        } else {
+            window.localStorage.removeItem('alerted');
+        }
+
+        chunks.pop();
     }
 };
 
@@ -132,24 +138,36 @@ M.tinymce_recordrtc.upload_to_server = function(type, callback) {
 
             // Generate filename with random ID and file extension.
             var fileName = (Math.random() * 1000).toString().replace('.', '');
-            if (type === 'audio') {
-                fileName += '-audio.ogg';
-            } else {
-                fileName += '-video.webm';
-            }
+            fileName += (type === 'audio') ? '-audio.ogg'
+                                           : '-video.webm';
 
             // Create FormData to send to PHP upload/save script.
-            var formData = new window.FormData();
-            formData.append('contextid', window.params.contextid);
-            formData.append('sesskey', window.params.sesskey);
-            formData.append(type + '-filename', fileName);
-            formData.append(type + '-blob', blob);
+            var formData = new window.FormData(),
+                editorId = tinyMCE.activeEditor.id,
+                filepickerOptions = parent.M.editor_tinymce.filepicker_options[editorId].link,
+                repositoryKeys = window.Object.keys(filepickerOptions.repositories);
+
+            formData.append('repo_upload_file', blob, fileName);
+            formData.append('itemid', filepickerOptions.itemid);
+
+            for (var i = 0; i < repositoryKeys.length; i++) {
+                if (filepickerOptions.repositories[repositoryKeys[i]].type === 'upload') {
+                    formData.append('repo_id', filepickerOptions.repositories[repositoryKeys[i]].id);
+                    break;
+                }
+            }
+
+            formData.append('env', filepickerOptions.env);
+            formData.append('sesskey', M.cfg.sesskey);
+            formData.append('client_id', filepickerOptions.client_id);
+            formData.append('savepath', '/');
+            formData.append('ctx_id', filepickerOptions.context.id);
 
             // Pass FormData to PHP script using XHR.
-            M.tinymce_recordrtc.make_xmlhttprequest('save.php', formData, function(progress, responseText) {
+            var uploadEndpoint = M.cfg.wwwroot + '/repository/repository_ajax.php?action=upload';
+            M.tinymce_recordrtc.make_xmlhttprequest(uploadEndpoint, formData, function(progress, responseText) {
                 if (progress === 'upload-ended') {
-                    var initialURL = location.href.replace(location.href.split('/').pop(), '') + 'uploads.php/';
-                    callback('ended', initialURL + responseText);
+                    callback('ended', window.JSON.parse(responseText).url);
                 } else {
                     callback(progress);
                 }
