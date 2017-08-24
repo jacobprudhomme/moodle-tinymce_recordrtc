@@ -5,6 +5,11 @@
 // @copyright  2016 onwards, Blindside Networks Inc.
 // @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// ESLint directives.
+/* global tinyMCE, startStopBtn, uploadBtn, player, recType, mediaRecorder: true */
+/* exported countdownTicker */
+/* eslint-disable camelcase */
+
 // Scrutinizer CI directives.
 /** global: parent */
 /** global: M */
@@ -69,7 +74,7 @@ M.tinymce_recordrtc.handle_stop = function() {
     // Handle when upload button is clicked.
     uploadBtn.on('click', function() {
         // Trigger error if no recording has been made.
-        if (!player.get('src') || chunks === []) {
+        if (chunks.length === 0) {
             M.tinymce_recordrtc.show_alert('norecordingfound');
         } else {
             uploadBtn.set('disabled', true);

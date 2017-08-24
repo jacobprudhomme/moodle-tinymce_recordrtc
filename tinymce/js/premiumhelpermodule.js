@@ -5,6 +5,10 @@
 // @copyright  2016 onwards, Blindside Networks Inc.
 // @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// ESLint directives.
+/* global tinyMCEPopup, startStopBtn, uploadBtn, player, recType, mediaRecorder: true */
+/* eslint-disable camelcase */
+
 // Scrutinizer CI directives.
 /** global: M */
 /** global: tinyMCEPopup */
@@ -39,7 +43,7 @@ M.tinymce_recordrtc.init_connection = function() {
             // Continue as normal.
         });
 
-        socket.on('unauthorized', function(err) {
+        socket.on('unauthorized', function() {
             M.tinymce_recordrtc.show_alert('notpremium', closeDialogue);
         });
     });
@@ -57,7 +61,7 @@ M.tinymce_recordrtc.handle_data_available = function(event) {
 };
 
 // Handle recording end.
-M.tinymce_recordrtc.handle_stop = function(event) {
+M.tinymce_recordrtc.handle_stop = function() {
     startStopBtn.set('textContent', 'Start Recording');
 
     socket.emit('recording stopped');

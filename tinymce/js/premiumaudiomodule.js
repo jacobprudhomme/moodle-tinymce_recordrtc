@@ -5,6 +5,12 @@
 // @copyright  2016 onwards, Blindside Networks Inc.
 // @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// ESLint directives.
+/* global alertWarning: true, alertDanger: true, player: true, playerDOM: true, mediaRecorder */
+/* global startStopBtn: true, uploadBtn: true, recType: true, socket: true, recordrtc */
+/* exported alertWarning, alertDanger */
+/* eslint-disable camelcase */
+
 // Scrutinizer CI directives.
 /** global: M */
 /** global: Y */
@@ -32,6 +38,8 @@ M.tinymce_recordrtc.view_init = function() {
     recType = 'audio';
     socket = window.io(window.params.serverurl);
 
+    // Show alert and close plugin if WebRTC is not supported.
+    M.tinymce_recordrtc.check_has_gum();
     // Show alert and redirect user if connection is not secure.
     M.tinymce_recordrtc.check_secure();
     // Show alert if using non-ideal browser.
@@ -103,16 +111,12 @@ M.tinymce_recordrtc.view_init = function() {
 
     // Handle when upload button is clicked.
     uploadBtn.on('click', function() {
-        // Trigger error if no recording has been made.
-        if (!player.get('src')) {
-            M.tinymce_recordrtc.show_alert('norecordingfound');
-        } else {
-            uploadBtn.set('disabled', true);
+        // Currently no way to check if no recording has been made.
+        uploadBtn.set('disabled', true);
 
-            socket.emit('recording uploaded');
+        socket.emit('recording uploaded');
 
-            M.tinymce_recordrtc.insert_annotation(recType, player.get('src'));
-        }
+        M.tinymce_recordrtc.insert_annotation(recType, player.get('src'));
     });
 };
 

@@ -5,6 +5,11 @@
 // @copyright  2016 onwards, Blindside Networks Inc.
 // @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// ESLint directives.
+/* global tinyMCEPopup */
+/* exported mediaRecorder, player, playerDOM, recType, startStopBtn */
+/* eslint-disable camelcase, no-alert */
+
 // Scrutinizer CI directives.
 /** global: navigator */
 /** global: M */
@@ -131,7 +136,11 @@ M.tinymce_recordrtc.check_secure = function() {
     var isSecureOrigin = (window.location.protocol === 'https:') ||
                          (window.location.host.indexOf('localhost') !== -1);
 
-    if (!isSecureOrigin) {
+    if (!isSecureOrigin && (window.bowser.chrome || window.bowser.opera)) {
+        M.tinymce_recordrtc.show_alert('gumsecurity', function() {
+            tinyMCEPopup.close();
+        });
+    } else if (!isSecureOrigin) {
         alertDanger.ancestor().ancestor().removeClass('hide');
     }
 };

@@ -5,6 +5,12 @@
 // @copyright  2016 onwards, Blindside Networks Inc.
 // @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 
+// ESLint directives.
+/* global alertWarning: true, alertDanger: true, player: true, playerDOM: true, mediaRecorder, countdownTicker */
+/* global startStopBtn: true, uploadBtn: true, recType: true, recordrtc, maxUploadSize: true, chunks: true, blobSize: true */
+/* exported alertWarning, alertDanger, maxUploadSize, chunks, blobSize */
+/* eslint-disable camelcase */
+
 // Scrutinizer CI directives.
 /** global: M */
 /** global: Y */
