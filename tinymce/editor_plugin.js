@@ -110,7 +110,7 @@ function addVideo(ed, url) {
             viewparams += '=' + window.encodeURIComponent(videortc[key]);
         });
         var viewurl = ed.getParam("moodle_plugin_base") + 'recordrtc/videortc.php';
-        viewurl += (viewparams != '' ? '?' + viewparams : '');
+        viewurl += (viewparams !== '' ? '?' + viewparams : '');
 
         var onClose = function() {
             ed.windowManager.onClose.remove(onClose);
