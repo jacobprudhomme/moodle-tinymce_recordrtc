@@ -102,7 +102,7 @@ M.tinymce_recordrtc.view_init = function() {
             }, 1000);
 
             // Stop recording.
-            M.tinymce_recordrtc.stop_recording_video(startStopBtn.stream);
+            M.tinymce_recordrtc.stop_recording(startStopBtn.stream);
 
             // Change button to offer to record again.
             startStopBtn.set('textContent', M.util.get_string('recordagain', 'tinymce_recordrtc'));
@@ -149,15 +149,4 @@ M.tinymce_recordrtc.capture_audio_video = function(config) {
             config.onMediaCapturingFailed(error);
         }
     );
-};
-
-M.tinymce_recordrtc.stop_recording_video = function(stream) {
-    // Stop recording microphone stream.
-    mediaRecorder.stop();
-
-    // Stop each individual MediaTrack.
-    var tracks = stream.getTracks();
-    for (var i = 0; i < tracks.length; i++) {
-        tracks[i].stop();
-    }
 };

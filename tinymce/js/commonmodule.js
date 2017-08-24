@@ -164,6 +164,17 @@ M.tinymce_recordrtc.capture_user_media = function(mediaConstraints, successCallb
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
 };
 
+M.tinymce_recordrtc.stop_recording = function(stream) {
+    // Stop recording microphone stream.
+    mediaRecorder.stop();
+
+    // Stop each individual MediaTrack.
+    var tracks = stream.getTracks();
+    for (var i = 0; i < tracks.length; i++) {
+        tracks[i].stop();
+    }
+};
+
 // Generates link to recorded annotation to be inserted.
 M.tinymce_recordrtc.create_annotation = function(type, recording_url) {
     var linkText = window.prompt(M.util.get_string('annotationprompt', 'tinymce_recordrtc'),
