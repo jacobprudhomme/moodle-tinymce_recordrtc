@@ -72,7 +72,10 @@ class tinymce_recordrtc extends editor_tinymce_plugin {
                 'sesskey' => sesskey(),
                 'timelimit' => $this->get_config('timelimit'),
                 'audiobitrate' => $this->get_config('audiobitrate'),
-                'videobitrate' => $this->get_config('videobitrate')
+                'videobitrate' => $this->get_config('videobitrate'),
+                'serverurl' => $this->get_config('serverurl'),
+                'apikey' => $this->get_config('apikey'),
+                'apisecret' => $this->get_config('apisecret')
             );
             $this->add_button_after($params, 0, $type.'rtc');
 
